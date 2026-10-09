@@ -12,6 +12,13 @@ de las casas, mientras que los dueños solo reciben un enlace de lectura.
 El acceso está restringido a cuentas autorizadas: no hay registro público ni
 entrada sin inicio de sesión.
 
+**En producción:** <https://casa-habitada-salta.netlify.app> (requiere inicio de
+sesión con un correo autorizado).
+
+**Demo pública:** <https://casa-habitada-salta.netlify.app/?demo> (o el enlace
+"Ver una demo" en la pantalla de login). Corre con datos de ejemplo en el
+navegador del visitante y **no se conecta a la base real**.
+
 ---
 
 ## Características
@@ -28,6 +35,9 @@ entrada sin inicio de sesión.
   solapes para no agendar dos casas en el mismo momento.
 - **Planes con frecuencia.** La pantalla de inicio calcula cuándo toca visitar
   cada casa según su plan (diario, cada dos días o semanal).
+- **Modo demo.** Una demo pública con datos de ejemplo que corre solo en el
+  navegador (se entra con `?demo` o con el enlace "Ver una demo" del login). No
+  accede a la base de datos real.
 
 ## Tecnologías
 
@@ -128,6 +138,9 @@ tests y build.
 El proyecto está enlazado a Netlify y publica automáticamente: cada push a la
 rama `master` dispara un build y un despliegue a producción.
 
+**Sitio en producción:** <https://casa-habitada-salta.netlify.app> (requiere
+inicio de sesión con un correo autorizado).
+
 - Comando de build: `pnpm run build`
 - Directorio publicado: `dist/`
 
@@ -144,8 +157,9 @@ pnpm build
 
 ## Privacidad y seguridad
 
-- El acceso está restringido a cuentas autorizadas. El registro público está
-  deshabilitado y la app no permite entrar sin iniciar sesión.
+- El acceso a los datos reales está restringido a cuentas autorizadas. El
+  registro público está deshabilitado y no se puede entrar a la base sin iniciar
+  sesión. El modo demo no accede a datos reales.
 - Las políticas de Row Level Security aíslan los datos: cada cuenta ve y edita
   únicamente sus propias casas y visitas.
 - Cada casa tiene un enlace único e imposible de adivinar que se comparte solo con
