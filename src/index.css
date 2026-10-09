@@ -1,0 +1,23 @@
+/*
+  Casa Habitada · sistema visual de la app
+  Paleta "bosque": verde profundo, blanco frío y un solo acento ámbar (novedades).
+  Tipografía: Geist. 4 tamaños (13 / 15 / 18 / 28) y 2 pesos (400 / 600). Números en Geist Mono.
+  Espaciado: múltiplos de 4 y 8. Radios: tarjetas 20px, campos 12px, botones en píldora.
+  Tema: sigue al sistema (claro / oscuro).
+
+  Los estilos viven separados por pieza o por pantalla en ./styles/.
+  El orden de estos imports es el orden de la cascada: no cambiarlo.
+*/
+@import './styles/tokens.css';
+@import './styles/base.css';
+@import './styles/componentes.css';
+@import './styles/inicio.css';
+@import './styles/casa.css';
+@import './styles/visitas.css';
+@import './styles/visita.css';
+@import './styles/formularios.css';
+@import './styles/login.css';
+@import './styles/informe.css';
+@import './styles/varios.css';
+@import './styles/informe-detalle.css';
+@import './styles/terminaciones.css';

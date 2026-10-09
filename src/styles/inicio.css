@@ -1,0 +1,33 @@
+/* ---------- inicio ---------- */
+.saludo { padding: 8px 0 8px; }
+.saludo .fecha { font-size: var(--t-xs); color: var(--muted); font-weight: 600; }
+.saludo h1 { margin: 4px 0 8px; }
+.saludo p { color: var(--muted); }
+.saludo p b { color: var(--ink); font-weight: 600; }
+
+.lista-casas { list-style: none; display: grid; gap: 12px; }
+.casa-card { position: relative; display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: var(--r); background: var(--surface); box-shadow: var(--shadow-sm), inset 0 0 0 1px var(--line); transition: transform .2s var(--ease), box-shadow .2s; animation: sube .5s var(--ease) both; animation-delay: calc(var(--i, 0) * 50ms); }
+.casa-card:has(.casa-link:active) { transform: scale(.985); }
+.casa-card.toca { box-shadow: var(--shadow), inset 0 0 0 1px color-mix(in srgb, var(--primary) 18%, var(--line)); }
+.casa-link { flex: 1; min-width: 0; display: flex; align-items: center; gap: 12px; }
+.casa-link::after { content: ''; position: absolute; inset: 0; border-radius: var(--r); }
+.casa-foto { width: 64px; height: 64px; border-radius: 14px; overflow: hidden; background: var(--primary-5); display: grid; place-items: center; color: var(--primary); flex: none; }
+.casa-foto img { width: 100%; height: 100%; object-fit: cover; }
+.casa-info { flex: 1; min-width: 0; display: grid; gap: 2px; }
+.casa-info b { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.casa-info .t-xs { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.casa-meta { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
+.estado { display: inline-flex; align-items: center; gap: 4px; font-size: var(--t-xs); font-weight: 600; color: var(--muted); }
+.estado::before { content: ''; width: 8px; height: 8px; border-radius: 999px; background: currentColor; }
+.estado.toca { color: var(--accent-ink); }
+.estado.toca::before { background: var(--accent); }
+.estado.hecha { color: var(--ok); }
+.casa-meta svg { color: var(--muted); }
+.casa-card .btn.chico { position: relative; z-index: 1; }
+
+.vacio { text-align: center; padding: 32px 24px; display: grid; gap: 8px; justify-items: center; }
+.vacio .circulo { width: 72px; height: 72px; border-radius: 999px; background: var(--primary-5); color: var(--primary); display: grid; place-items: center; margin-bottom: 8px; }
+.vacio p { color: var(--muted); max-width: 32ch; }
+.vacio .botones { display: grid; gap: 8px; width: 100%; margin-top: 16px; }
+.nota-demo { display: flex; gap: 12px; align-items: flex-start; margin-top: 32px; padding: 12px 16px; border-radius: var(--r-field); background: var(--accent-soft); color: var(--accent-ink); font-size: var(--t-xs); }
+.cerrar-sesion { display: flex; justify-content: center; margin-top: 24px; }

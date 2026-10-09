@@ -1,0 +1,5 @@
+/* ---------- informe público ---------- */
+.informe-top { display: flex; align-items: center; gap: 8px; height: 56px; font-weight: 600; }
+.informe-portada { border-radius: var(--r); overflow: hidden; }
+.informe-portada .portada { min-height: 240px; }
+.informe-pie { margin-top: 40px; padding: 24px; border-radius: var(--r); background: var(--surface-2); display: grid; gap: 12px; justify-items: start; }

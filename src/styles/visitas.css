@@ -1,0 +1,40 @@
+/* ---------- línea de tiempo de visitas ---------- */
+.timeline { list-style: none; position: relative; display: grid; gap: 12px; }
+.timeline::before { content: ''; position: absolute; left: 15px; top: 16px; bottom: 16px; width: 2px; border-radius: 2px; background: var(--line); }
+.tl-item { position: relative; display: grid; grid-template-columns: 32px 1fr; gap: 12px; align-items: start; animation: sube .5s var(--ease) both; animation-delay: calc(var(--i, 0) * 50ms); }
+.tl-punto { position: relative; z-index: 1; width: 32px; height: 32px; margin-top: 12px; border-radius: 999px; display: grid; place-items: center; background: var(--ok-soft); color: var(--ok); box-shadow: 0 0 0 4px var(--bg); }
+.tl-item.novedad .tl-punto { background: var(--accent); color: #221700; }
+.tl-card { background: var(--surface); border-radius: 16px; box-shadow: var(--shadow-sm), inset 0 0 0 1px var(--line); overflow: hidden; }
+.tl-cab { width: 100%; display: flex; align-items: center; gap: 12px; padding: 12px 12px 12px 16px; border: 0; background: none; text-align: left; }
+.tl-cab .txt { flex: 1; min-width: 0; display: grid; gap: 2px; }
+.tl-cab b { font-weight: 600; }
+.tl-cab .t-xs { color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tl-cab .caret { color: var(--muted); transition: transform .3s var(--ease); }
+.tl-cab[aria-expanded='true'] .caret { transform: rotate(180deg); }
+.tl-cuerpo { padding: 4px 16px 16px; border-top: 1px solid var(--line); animation: abre .35s var(--ease); }
+@keyframes abre { from { opacity: 0; transform: translateY(-4px); } }
+.tl-cuerpo h4 { font-size: var(--t-xs); color: var(--muted); margin: 16px 0 8px; }
+.nota-general { background: var(--surface-2); border-radius: var(--r-field); padding: 12px; margin-top: 12px; white-space: pre-wrap; }
+.items { list-style: none; display: grid; gap: 8px; }
+.items li { display: grid; grid-template-columns: 20px 1fr; gap: 8px; align-items: start; }
+.items .marca { width: 20px; height: 20px; margin-top: 1px; border-radius: 999px; display: grid; place-items: center; background: var(--ok-soft); color: var(--ok); }
+.items li.novedad .marca { background: var(--accent-soft); color: var(--accent-ink); }
+.items li.na { color: var(--muted); }
+.items li.na .marca { background: var(--surface-2); color: var(--muted); }
+.items .nota { color: var(--accent-ink); font-size: var(--t-xs); margin-top: 2px; }
+
+.fotos { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 8px; margin: 12px 0 4px; }
+.fotos button { border: 0; padding: 0; background: var(--surface-2); border-radius: var(--r-field); overflow: hidden; aspect-ratio: 1; cursor: zoom-in; }
+.fotos img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s var(--ease); }
+.fotos button:hover img { transform: scale(1.05); }
+.visor { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; padding: 16px; background: rgb(8 12 10 / .94); cursor: zoom-out; animation: fundido .2s ease-out; }
+.visor img { max-height: 84dvh; max-width: 100%; border-radius: var(--r-field); animation: fundido .3s var(--ease); cursor: default; }
+.visor-cerrar, .visor-flecha { position: absolute; display: grid; place-items: center; width: 48px; height: 48px; border: 0; border-radius: 999px; background: rgb(255 255 255 / .14); color: #fff; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: background .2s; }
+.visor-cerrar:hover, .visor-flecha:hover { background: rgb(255 255 255 / .26); }
+.visor-cerrar { top: max(16px, env(safe-area-inset-top)); right: 16px; }
+.visor-flecha { top: 50%; transform: translateY(-50%); }
+.visor-flecha.izq { left: 12px; }
+.visor-flecha.der { right: 12px; }
+.visor-contador { position: absolute; bottom: max(20px, env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); color: #fff; font-size: var(--t-xs); font-weight: 600; padding: 4px 12px; border-radius: 999px; background: rgb(255 255 255 / .14); }
+@keyframes fundido { from { opacity: 0; } }
+@keyframes sube { from { opacity: 0; transform: translateY(12px); } }

@@ -1,0 +1,18 @@
+/* ---------- formularios ---------- */
+.form { display: grid; gap: 16px; }
+label { display: grid; gap: 8px; font-weight: 600; font-size: var(--t-xs); }
+.ayuda { font-weight: 400; color: var(--muted); font-size: var(--t-xs); }
+input, select, textarea {
+  width: 100%; min-height: 48px; padding: 12px; border: 0; border-radius: var(--r-field);
+  background: var(--surface-2); font-size: 16px; font-weight: 400; color: var(--ink);
+  box-shadow: inset 0 0 0 1px transparent; transition: box-shadow .2s, background .2s;
+}
+textarea { min-height: 0; resize: vertical; }
+input::placeholder, textarea::placeholder { color: color-mix(in srgb, var(--muted) 75%, transparent); }
+input:focus, select:focus, textarea:focus { outline: none; background: var(--surface); box-shadow: inset 0 0 0 2px var(--primary); }
+.dos { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.lista-edit { display: grid; gap: 4px; }
+.fila-input { display: flex; align-items: center; gap: 4px; }
+.fila-input input { min-height: 44px; }
+input.seccion { background: none; font-weight: 600; font-size: var(--t-md); padding-left: 0; }
+input.seccion:focus { padding-left: 12px; }
