@@ -2,6 +2,8 @@
 // Las fotos se guardan como data URLs adentro del mismo guardado.
 import { nuevoId, nuevoToken } from './ids.js'
 import { CASA_EJEMPLO, visitasEjemplo } from './ejemplo.js'
+import { tz } from './formato.js'
+import { primerChoque, mensajeChoque } from './disponibilidad.js'
 
 const LS = 'casa-habitada-demo'
 const CLAVE_SESION = LS + '-sesion'
@@ -10,9 +12,9 @@ export const modoDemo = true
 
 function leer() {
   try {
-    return JSON.parse(localStorage.getItem(LS)) ?? { casas: [], visitas: [] }
+    return JSON.parse(localStorage.getItem(LS)) ?? { casas: [], visitas: [], programaciones: [] }
   } catch {
-    return { casas: [], visitas: [] }
+    return { casas: [], visitas: [], programaciones: [] }
   }
 }
 
@@ -71,6 +73,7 @@ export async function borrarCasa(id) {
   const db = leer()
   db.casas = db.casas.filter((c) => c.id !== id)
   db.visitas = db.visitas.filter((v) => v.casa_id !== id)
+  db.programaciones = (db.programaciones ?? []).filter((p) => p.casa_id !== id)
   escribir(db)
 }
 
@@ -96,6 +99,41 @@ export async function guardarVisita(visita) {
 export async function borrarVisita(id) {
   const db = leer()
   db.visitas = db.visitas.filter((v) => v.id !== id)
+  escribir(db)
+}
+
+// ---------- Agenda ----------
+const diaDe = (iso) => new Date(iso).toLocaleDateString('en-CA', { timeZone: tz })
+
+export async function listarProgramaciones(desde, hasta) {
+  return (leer().programaciones ?? [])
+    .filter((b) => b.inicio >= desde && b.inicio <= hasta)
+    .sort((a, b) => a.inicio.localeCompare(b.inicio))
+}
+
+export async function guardarProgramacion(bloque) {
+  const db = leer()
+  db.programaciones ??= []
+  const dia = diaDe(bloque.inicio)
+  const otros = db.programaciones.filter((b) => b.id !== bloque.id && diaDe(b.inicio) === dia)
+  const choque = primerChoque(otros, bloque.inicio, bloque.fin)
+  if (choque) {
+    const casa = db.casas.find((c) => c.id === choque.casa_id)
+    throw new Error(mensajeChoque(casa?.nombre ?? 'otra casa', choque))
+  }
+  const i = db.programaciones.findIndex((b) => b.id === bloque.id)
+  const final = i >= 0
+    ? { ...db.programaciones[i], ...bloque }
+    : { ...bloque, id: nuevoId(), creada: new Date().toISOString() }
+  if (i >= 0) db.programaciones[i] = final
+  else db.programaciones.push(final)
+  escribir(db)
+  return final
+}
+
+export async function borrarProgramacion(id) {
+  const db = leer()
+  db.programaciones = (db.programaciones ?? []).filter((b) => b.id !== id)
   escribir(db)
 }
 
