@@ -13,6 +13,7 @@ const CasaForm = lazy(() => import('./pages/CasaForm.jsx'))
 const Casa = lazy(() => import('./pages/Casa.jsx'))
 const NuevaVisita = lazy(() => import('./pages/NuevaVisita.jsx'))
 const Informe = lazy(() => import('./pages/Informe.jsx'))
+const Agenda = lazy(() => import('./pages/Agenda.jsx'))
 
 function Privado() {
   const [sesion, setSesion] = useState(undefined)
@@ -34,6 +35,7 @@ function Privado() {
       <Route path="/casa/:id" element={<Casa />} />
       <Route path="/casa/:id/editar" element={<CasaForm key="editar" />} />
       <Route path="/casa/:id/visita" element={<NuevaVisita />} />
+      <Route path="/agenda" element={<Agenda />} />
     </Routes>
   )
 }

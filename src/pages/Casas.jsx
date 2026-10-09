@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { CaretRight, HouseLine, Info, PawPrint, Play, Plus, SignOut } from '@phosphor-icons/react'
+import { CalendarBlank, CaretRight, HouseLine, Info, PawPrint, Play, Plus, SignOut } from '@phosphor-icons/react'
 import { listarCasas, resumenVisitas, cargarEjemplo, modoDemo } from '../lib/store.js'
 import { estadoCasa, haceCuanto, saludo } from '../lib/agenda.js'
 import { fechaLarga } from '../lib/formato.js'
@@ -44,7 +44,12 @@ export default function Casas({ onSalir }) {
   }, [])
 
   const barra = (
-    <Barra derecha={<Link to="/casa/nueva" className="btn chico"><Plus size={16} weight="bold" /> Agregar casa</Link>} />
+    <Barra derecha={
+      <>
+        <Link to="/agenda" className="btn chico sec"><CalendarBlank size={16} weight="bold" /> Agenda</Link>
+        <Link to="/casa/nueva" className="btn chico"><Plus size={16} weight="bold" /> Agregar casa</Link>
+      </>
+    } />
   )
 
   if (error) return <>{barra}<main className="pantalla"><p className="error" role="alert">{error}</p></main></>
