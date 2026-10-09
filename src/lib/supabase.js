@@ -2,6 +2,8 @@
 // Cada usuaria solo ve lo suyo (RLS en supabase/schema.sql); el dueño entra con su token.
 import { createClient } from '@supabase/supabase-js'
 import { nuevoId } from './ids.js'
+import { tz } from './formato.js'
+import { primerChoque, mensajeChoque } from './disponibilidad.js'
 
 const URL = import.meta.env.VITE_SUPABASE_URL
 const KEY = import.meta.env.VITE_SUPABASE_ANON_KEY
@@ -151,6 +153,42 @@ export async function borrarVisita(id) {
   const { error } = await sb.from('visitas').delete().eq('id', id)
   if (error) throw error
   if (!previa.error && previa.data) await borrarFotosDeStorage(fotosDeVisita(previa.data))
+}
+
+// ---------- Agenda ----------
+export async function listarProgramaciones(desde, hasta) {
+  const { data, error } = await sb
+    .from('programaciones').select('*')
+    .gte('inicio', desde).lte('inicio', hasta)
+    .order('inicio')
+  if (error) throw error
+  return data
+}
+
+export async function guardarProgramacion(bloque) {
+  // Revalidamos el solape contra los bloques del día antes de escribir.
+  const dia = new Date(bloque.inicio).toLocaleDateString('en-CA', { timeZone: tz })
+  const { data: delDia, error } = await sb
+    .from('programaciones').select('*')
+    .gte('inicio', `${dia}T00:00:00-03:00`).lte('inicio', `${dia}T23:59:59-03:00`)
+  if (error) throw error
+  const choque = primerChoque((delDia ?? []).filter((b) => b.id !== bloque.id), bloque.inicio, bloque.fin)
+  if (choque) {
+    const { data: casa } = await sb.from('casas').select('nombre').eq('id', choque.casa_id).maybeSingle()
+    throw new Error(mensajeChoque(casa?.nombre ?? 'otra casa', choque))
+  }
+  const campos = { casa_id: bloque.casa_id, inicio: bloque.inicio, fin: bloque.fin }
+  const q = bloque.id
+    ? sb.from('programaciones').update(campos).eq('id', bloque.id)
+    : sb.from('programaciones').insert(campos)
+  const { data, error: errorGuardar } = await q.select().single()
+  if (errorGuardar) throw errorGuardar
+  return data
+}
+
+export async function borrarProgramacion(id) {
+  const { error } = await sb.from('programaciones').delete().eq('id', id)
+  if (error) throw error
 }
 
 // ---------- Fotos ----------

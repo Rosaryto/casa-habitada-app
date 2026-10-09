@@ -33,20 +33,41 @@ create table public.visitas (
 );
 create index on public.visitas (casa_id, inicio desc);
 
+-- ---------- Agenda: bloques de horarios programados ----------
+create table public.programaciones (
+  id uuid primary key default gen_random_uuid(),
+  usuario uuid not null default auth.uid() references auth.users on delete cascade,
+  casa_id uuid not null references public.casas on delete cascade,
+  inicio timestamptz not null,
+  fin timestamptz not null,
+  creada timestamptz not null default now(),
+  check (fin > inicio)
+);
+create index on public.programaciones (inicio);
+
 -- ---------- Seguridad: cada usuaria ve y edita solo lo suyo ----------
 alter table public.casas enable row level security;
 alter table public.visitas enable row level security;
+alter table public.programaciones enable row level security;
 
 -- Permisos explícitos (los proyectos nuevos de Supabase no siempre los dan solos).
 -- Las visitantes anónimas no tocan las tablas: el dueño lee solo a través de informe_publico.
-grant select, insert, update, delete on public.casas, public.visitas to authenticated;
-revoke all on public.casas, public.visitas from anon;
+grant select, insert, update, delete on public.casas, public.visitas, public.programaciones to authenticated;
+revoke all on public.casas, public.visitas, public.programaciones from anon;
 
 create policy "mis casas" on public.casas
   for all to authenticated
   using (usuario = auth.uid()) with check (usuario = auth.uid());
 
 create policy "mis visitas" on public.visitas
+  for all to authenticated
+  using (usuario = auth.uid())
+  with check (
+    usuario = auth.uid()
+    and exists (select 1 from public.casas c where c.id = casa_id and c.usuario = auth.uid())
+  );
+
+create policy "mis programaciones" on public.programaciones
   for all to authenticated
   using (usuario = auth.uid())
   with check (

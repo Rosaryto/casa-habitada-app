@@ -41,6 +41,11 @@ export const listarVisitas = api.listarVisitas
 export const guardarVisita = api.guardarVisita
 export const borrarVisita = api.borrarVisita
 
+// ---------- Agenda ----------
+export const listarProgramaciones = api.listarProgramaciones
+export const guardarProgramacion = api.guardarProgramacion
+export const borrarProgramacion = api.borrarProgramacion
+
 // ---------- Fotos ----------
 // Las achica el mismo para los dos backends; el backend decide dónde quedan.
 export async function subirFoto(archivo) {
