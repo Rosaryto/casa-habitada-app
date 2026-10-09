@@ -6,9 +6,36 @@ import { comprimirImagen } from './image.js'
 import * as demo from './demo.js'
 import * as nube from './supabase.js'
 
-const api = nube.disponible ? nube : demo
+// El modo demo se activa solo si no hay Supabase configurado (desarrollo en tu
+// equipo) o si se pide con "?demo" en la dirección. Ese segundo caso sirve para
+// mostrar la app desde el sitio publicado SIN tocar la base real: usa solo el
+// navegador de quien mira. La elección queda guardada en la pestaña.
+const CLAVE_DEMO = 'casa-habitada-demo-pedido'
+
+function pidieronDemo() {
+  try {
+    if (new URLSearchParams(window.location.search).has('demo')) {
+      sessionStorage.setItem(CLAVE_DEMO, '1')
+      return true
+    }
+    return sessionStorage.getItem(CLAVE_DEMO) === '1'
+  } catch {
+    return false
+  }
+}
+
+// "Forzado" = hay Supabase configurado pero igual se pidió el demo: se puede
+// volver al login real. "Normal" = sin Supabase, es el modo de tu equipo.
+export const modoDemoForzado = nube.disponible && pidieronDemo()
+const api = nube.disponible && !modoDemoForzado ? nube : demo
 
 export const modoDemo = api.modoDemo
+
+// Sale del demo pedido y vuelve al login real (sin la marca "?demo").
+export function salirDelDemo() {
+  try { sessionStorage.removeItem(CLAVE_DEMO) } catch { /* sin almacenamiento */ }
+  window.location.href = window.location.pathname
+}
 
 // ---------- Sesión ----------
 export const sesionActual = api.sesionActual

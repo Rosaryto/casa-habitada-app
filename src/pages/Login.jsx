@@ -73,6 +73,11 @@ export default function Login({ onEntrar }) {
                 {conClave ? 'Mejor entrar con un enlace al correo' : 'Prefiero entrar con contraseña'}
               </button>
             )}
+            {!modoDemo && (
+              <button type="button" className="link" style={{ justifySelf: 'center' }} onClick={() => { window.location.search = '?demo' }}>
+                Ver una demo
+              </button>
+            )}
           </form>
         )}
       </div>
